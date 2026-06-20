@@ -1,0 +1,1 @@
+# FarmCare AI Firebase Package
