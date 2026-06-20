@@ -140,3 +140,4 @@ To facilitate instant testing for Kaggle judges without manual database or API c
    - Click the **⚡ Load Tomato Demo** button.
    - Click **Submit for Diagnosis**.
    - Watch the multi-agent timeline capture logs as the agents negotiate and compile your final structured farming recommendation plan.
+# FarmCare-AI
