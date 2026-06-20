@@ -203,3 +203,7 @@ my_env.tfvars
 
 # A2A Inspector
 tools/a2a-inspector/
+
+# Static Uploads
+backend/static/uploads/*
+!backend/static/uploads/.gitkeep
