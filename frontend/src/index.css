@@ -106,3 +106,245 @@ h1, h2, h3, h4 {
 .hover-scale:hover {
   transform: translateY(-2px);
 }
+
+/* ===================================================================
+   RESPONSIVE DESIGN SYSTEM & UTILITY CLASSES
+   =================================================================== */
+
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg-base);
+  position: relative;
+}
+
+.sidebar {
+  width: 260px;
+  border-right: 1px solid var(--border-subtle);
+  background: rgba(13, 20, 30, 0.85);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  flex-shrink: 0;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;
+}
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 6, 10, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.sidebar-overlay.active {
+  display: block;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.mobile-header {
+  display: none;
+}
+
+.main-content {
+  flex: 1;
+  padding: 40px;
+  overflow-y: auto;
+  max-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Responsive Grid helpers */
+.grid-2-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.grid-1-2 {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 24px;
+}
+
+.grid-1-12 {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.grid-3-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+
+.grid-span-2 {
+  grid-column: span 2;
+}
+
+.history-card {
+  display: flex;
+  gap: 24px;
+  padding: 24px;
+}
+
+.history-card-img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.history-recommendations-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 16px;
+  border-radius: 8px;
+}
+
+/* Landing Page Typography & Layouts */
+.landing-title {
+  font-size: 56px;
+  line-height: 1.1;
+  font-family: var(--font-display);
+  font-weight: 800;
+}
+
+.landing-buttons {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.chat-container {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 80px);
+  gap: 20px;
+}
+
+.chat-messages {
+  flex: 1;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+}
+
+
+/* Mobile Media Queries (Viewports <= 768px) */
+@media (max-width: 768px) {
+  .app-layout {
+    flex-direction: column;
+  }
+
+  .mobile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background: rgba(13, 20, 30, 0.95);
+    border-bottom: 1px solid var(--border-subtle);
+    position: sticky;
+    top: 0;
+    z-index: 998;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 280px;
+    height: 100vh;
+    transform: translateX(-100%);
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
+    background: #0d141e; /* Solid background for mobile drawer visibility */
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .main-content {
+    padding: 24px 16px;
+    max-height: none; /* Let standard viewport scroll handle page content on mobile */
+    overflow-y: visible;
+  }
+
+  /* Grid/Flex collapses */
+  .grid-2-col,
+  .grid-1-2,
+  .grid-1-12,
+  .grid-3-col,
+  .history-recommendations-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .grid-span-2 {
+    grid-column: span 1;
+  }
+
+
+  .grid-1-12 {
+    gap: 24px;
+  }
+
+  .history-card {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .history-card-img {
+    width: 100%;
+    height: 200px;
+  }
+
+  .landing-title {
+    font-size: 32px;
+    line-height: 1.2;
+  }
+
+  .landing-buttons {
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .landing-buttons button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .chat-container {
+    height: calc(100vh - 120px);
+    gap: 12px;
+  }
+
+  .chat-messages {
+    padding: 16px;
+  }
+}
+

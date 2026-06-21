@@ -14,13 +14,16 @@ import {
   Sparkles, 
   ArrowRight,
   Shield,
-  HelpCircle
+  HelpCircle,
+  Menu,
+  X
 } from 'lucide-react';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 export default function App() {
   const [activePage, setActivePage] = useState('landing');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [farmer, setFarmer] = useState({
     name: 'Demo Farmer',
     location: 'California, USA',
@@ -234,28 +237,48 @@ export default function App() {
   };
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg-base)' }}>
+    <div className="app-layout">
+      {/* Mobile Top Header */}
+      <header className="mobile-header">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <Sprout size={28} color="var(--primary)" />
+          <h2 style={{ fontSize: '18px', color: '#fff', fontFamily: 'var(--font-display)', margin: 0 }}>FarmCare AI</h2>
+        </div>
+        <button
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          style={{
+            background: 'transparent',
+            border: 0,
+            color: '#fff',
+            cursor: 'pointer',
+            padding: '4px',
+            display: 'flex',
+            alignItems: 'center'
+          }}
+        >
+          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </header>
+
+      {/* Backdrop overlay for mobile drawer */}
+      <div 
+        className={`sidebar-overlay ${isMobileMenuOpen ? 'active' : ''}`} 
+        onClick={() => setIsMobileMenuOpen(false)}
+      />
+
       {/* Sidebar Nav */}
-      <nav style={{
-        width: '260px',
-        borderRight: '1px solid var(--border-subtle)',
-        background: 'rgba(13, 20, 30, 0.8)',
-        padding: '24px',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '32px'
-      }}>
+      <nav className={`sidebar ${isMobileMenuOpen ? 'open' : ''}`}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <Sprout size={32} color="var(--primary)" />
           <div>
-            <h2 style={{ fontSize: '20px', color: '#fff', fontFamily: 'var(--font-display)' }}>FarmCare AI</h2>
+            <h2 style={{ fontSize: '20px', color: '#fff', fontFamily: 'var(--font-display)', margin: 0 }}>FarmCare AI</h2>
             <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Multi-Agent Intelligence</span>
           </div>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
           <button 
-            onClick={() => setActivePage('landing')}
+            onClick={() => { setActivePage('landing'); setIsMobileMenuOpen(false); }}
             style={{
               display: 'flex', alignItems: 'center', gap: '12px', width: '100%', padding: '12px',
               border: 0, borderRadius: '8px', background: activePage === 'landing' ? 'rgba(16, 185, 129, 0.15)' : 'transparent',
@@ -267,7 +290,7 @@ export default function App() {
           </button>
           
           <button 
-            onClick={() => setActivePage('dashboard')}
+            onClick={() => { setActivePage('dashboard'); setIsMobileMenuOpen(false); }}
             style={{
               display: 'flex', alignItems: 'center', gap: '12px', width: '100%', padding: '12px',
               border: 0, borderRadius: '8px', background: activePage === 'dashboard' ? 'rgba(16, 185, 129, 0.15)' : 'transparent',
@@ -279,7 +302,7 @@ export default function App() {
           </button>
 
           <button 
-            onClick={() => setActivePage('diagnosis')}
+            onClick={() => { setActivePage('diagnosis'); setIsMobileMenuOpen(false); }}
             style={{
               display: 'flex', alignItems: 'center', gap: '12px', width: '100%', padding: '12px',
               border: 0, borderRadius: '8px', background: activePage === 'diagnosis' ? 'rgba(16, 185, 129, 0.15)' : 'transparent',
@@ -291,7 +314,7 @@ export default function App() {
           </button>
 
           <button 
-            onClick={() => setActivePage('chat')}
+            onClick={() => { setActivePage('chat'); setIsMobileMenuOpen(false); }}
             style={{
               display: 'flex', alignItems: 'center', gap: '12px', width: '100%', padding: '12px',
               border: 0, borderRadius: '8px', background: activePage === 'chat' ? 'rgba(16, 185, 129, 0.15)' : 'transparent',
@@ -315,7 +338,7 @@ export default function App() {
       </nav>
 
       {/* Main Body */}
-      <main style={{ flex: 1, padding: '40px', overflowY: 'auto', maxHeight: '100vh' }}>
+      <main className="main-content">
         
         {/* ===================================================================
             LANDING PAGE 
@@ -328,13 +351,13 @@ export default function App() {
                   <Sparkles size={14} /> Kaggle Capstone Project Target Deployment
                 </span>
               </div>
-              <h1 style={{ fontSize: '56px', lineHeight: 1.1, fontFamily: 'var(--font-display)', fontWeight: 800 }}>
+              <h1 className="landing-title">
                 Autonomous <span style={{ color: 'var(--primary)' }}>Multi-Agent</span> Agricultural Intelligence
               </h1>
               <p style={{ fontSize: '18px', color: 'var(--text-secondary)', maxWidth: '720px' }}>
                 Deploys cooperative specialized AI agents utilizing the Google ADK and MCP Server architectures. Diagnose plant health anomalies, map climate risks, check market trade valuations, and apply for government aid programs in one seamless, offline-friendly pipeline.
               </p>
-              <div style={{ display: 'flex', gap: '16px', marginTop: '12px' }}>
+              <div className="landing-buttons">
                 <button 
                   onClick={() => setActivePage('diagnosis')}
                   style={{
@@ -366,7 +389,7 @@ export default function App() {
               <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>
                 Smallholder crop growers face an intersectional challenge: weather volatility triggers diseases, while market prices swing wildly. Traditional single-model AI platforms fail because they lack domain-specific tools or localized economic knowledge.
               </p>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+              <div className="grid-2-col">
                 <div style={{ background: 'rgba(255,0,0,0.05)', padding: '20px', borderRadius: '12px', border: '1px solid rgba(239,68,68,0.15)' }}>
                   <h4 style={{ color: '#f87171', marginBottom: '8px' }}>Critical Pitfall</h4>
                   <p style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Farmers receive advice that ignores impending rainfall, wasting spray inputs, or recommends crops currently collapsing in regional market value.</p>
@@ -420,7 +443,7 @@ export default function App() {
             </div>
 
             {/* Profile Overview */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '24px' }}>
+            <div className="grid-1-2">
               <div className="glass-panel" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', textAlign: 'center' }}>
                   <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'rgba(16,185,129,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -446,7 +469,7 @@ export default function App() {
 
               <div className="glass-panel" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <h3 style={{ fontSize: '18px' }}>System Connectivity Summary</h3>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '16px', marginTop: '8px' }}>
+                <div className="grid-3-col" style={{ marginTop: '8px' }}>
                   <div style={{ background: 'rgba(255,255,255,0.02)', padding: '16px', borderRadius: '12px', border: '1px solid var(--border-subtle)' }}>
                     <CloudSun size={20} color="var(--accent-blue)" style={{ marginBottom: '8px' }} />
                     <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Weather Endpoint</span>
@@ -476,12 +499,12 @@ export default function App() {
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                   {history.map((item, idx) => (
-                    <div key={item.id || idx} className="glass-panel" style={{ padding: '24px', display: 'flex', gap: '24px' }}>
+                    <div key={item.id || idx} className="glass-panel history-card">
                       {item.image_url && (
                         <img 
                           src={item.image_url.startsWith('http') ? item.image_url : `${API_BASE}${item.image_url}`} 
                           alt="Crop anomaly" 
-                          style={{ width: '120px', height: '120px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--border-subtle)' }}
+                          className="history-card-img"
                         />
                       )}
                       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -495,7 +518,7 @@ export default function App() {
                         </div>
                         <h4 style={{ fontSize: '15px' }}>{item.symptoms}</h4>
                         {item.recommendation && (
-                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginTop: '12px', background: 'rgba(255,255,255,0.02)', padding: '16px', borderRadius: '8px' }}>
+                          <div className="history-recommendations-grid">
                             <div>
                               <strong style={{ fontSize: '12px', color: 'var(--primary)' }}>Diagnosis</strong>
                               <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px' }}>{item.recommendation.crop_analysis}</p>
@@ -525,7 +548,7 @@ export default function App() {
               <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginTop: '4px' }}>Upload a photo of crop foliage issues and fill in farming coordinates to consult the Multi-Agent system.</p>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: '32px', alignItems: 'start' }}>
+            <div className="grid-1-12">
               {/* Form */}
               <form onSubmit={handleDiagnose} className="glass-panel" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -710,7 +733,7 @@ export default function App() {
                 <h2 style={{ fontSize: '24px', display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <Sprout color="var(--primary)" /> Coordinated Recommendations
                 </h2>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+                <div className="grid-2-col">
                   
                   {/* Crop Diagnosis */}
                   <div className="glass-panel" style={{ padding: '24px' }}>
@@ -737,7 +760,7 @@ export default function App() {
                   </div>
 
                   {/* Recommendation action plan */}
-                  <div className="glass-panel" style={{ padding: '24px', gridColumn: 'span 2', borderLeft: '4px solid var(--primary)' }}>
+                  <div className="glass-panel grid-span-2" style={{ padding: '24px', borderLeft: '4px solid var(--primary)' }}>
                     <h3 style={{ fontSize: '18px', color: '#fff', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
                       <FileText size={18} color="var(--primary)" /> Actionable Farm Management Recommendation
                     </h3>
@@ -754,17 +777,14 @@ export default function App() {
             AI INTERACTIVE CHAT 
             =================================================================== */}
         {activePage === 'chat' && (
-          <div style={{ maxWidth: '800px', margin: '0 auto', display: 'flex', flexDirection: 'column', height: 'calc(100vh - 80px)', gap: '20px' }}>
+          <div className="chat-container">
             <div>
               <h1 style={{ fontSize: '32px' }}>AI Agricultural Advisor</h1>
               <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginTop: '4px' }}>Query coordinates, treatments, or fertilizer programs. Backed by Google Gemini and MCP server databases.</p>
             </div>
 
             {/* Conversation Window */}
-            <div className="glass-panel" style={{
-              flex: 1, padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px',
-              overflowY: 'auto', maxHeight: 'calc(100vh - 300px)'
-            }}>
+            <div className="glass-panel chat-messages">
               {chatMessages.map((msg, i) => (
                 <div key={i} style={{
                   display: 'flex',
